@@ -4,7 +4,10 @@ import fs from "fs";
 // add food item
 
 const addFood = async (req, res) => {
+    
     let image_filename = `${req.file.filename}`
+    console.log(image_filename);
+    
 
     const food = new foodModel({
         name: req.body.name,
@@ -13,12 +16,16 @@ const addFood = async (req, res) => {
         category: req.body.category,
         image: image_filename
     })
+    if(!food.name | !food.description | !food.price | !food.category | !food.image){
+        return res.json({ success: false, message: "All fields are required" })
+    }
 
     try {
         await food.save()
         res.json({ success: true, message: "Food Added" })
     } catch (error) {
         console.log(error);
+        
         res.json({ success: false, message: "Error" })
     }
 }

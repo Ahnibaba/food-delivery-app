@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"thunder-client.saveTokenPerEnvironment": true,
+		"thunder-client.httpLibrary": "axios",
+		"thunder-client.saveToWorkspace": false
+	}
+}
