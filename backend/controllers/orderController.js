@@ -13,7 +13,7 @@ console.log("This is not supposed to be " + process.env.STRIPE_SECRET_KEY);
 // placing user order for frontend
 const placeOrder = async (req, res) => {
 
-    const frontend_url = "http://localhost:5173"
+    const frontend_url = "http://localhost:5174"
    
     try {
        const newOrder = new orderModel({

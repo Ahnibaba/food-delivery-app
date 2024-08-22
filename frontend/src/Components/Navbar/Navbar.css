@@ -176,12 +176,17 @@
    }
 
    .slide-menu.active-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       background-color: white;
       color: tomato;
       left: 0;
       opacity: 1;
       transition: all 0.5s ease;
       z-index: 1;
+      
+      
    }
    .bars {
       display: block;
