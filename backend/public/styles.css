@@ -1,0 +1,15 @@
+body {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+}
+div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

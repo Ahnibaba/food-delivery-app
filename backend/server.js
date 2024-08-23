@@ -11,6 +11,9 @@ import userRouter from "./routes/userRoute.js"
 import cartRouter from "./routes/cartRoute.js"
 import logoutRouter from "./routes/logoutRoute.js"
 import orderRouter from "./routes/orderRoute.js"
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 
 
 
@@ -28,7 +31,7 @@ const PORT = process.env.PORT || 4000
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions));
-
+app.use(express.static("./public"))
 app.options('*', cors(corsOptions)); // Enable pre-flight across-the-board
 
 
@@ -44,8 +47,12 @@ app.use("/api/user", logoutRouter)
 app.use("/api/cart", cartRouter)
 app.use("/api/order", orderRouter)
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
 app.get("/", (req, res) => {  
-    res.send("API working");
+    res.sendFile(__dirname + "/views/index.html")
 })
 
 app.listen(PORT, () => {
