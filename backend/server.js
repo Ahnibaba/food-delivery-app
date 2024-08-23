@@ -26,10 +26,7 @@ const PORT = process.env.PORT || 4000
 // middleware
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://food-delivery-app-swj3.vercel.app"],
-    credentials: true
-}))
+app.use(cors(corsOptions));
 
 
 // db connection
