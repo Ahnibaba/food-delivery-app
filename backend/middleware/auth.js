@@ -59,10 +59,10 @@ const refresh = (req, res, next) => {
             const accessToken = jwt.sign(
                 { id: decoded.id },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: "5m" }
+                { expiresIn: "7d" }
             );
 
-            res.cookie("accessToken", accessToken, { maxAge: 5 * 60 * 1000 });
+            res.cookie("accessToken", accessToken, { maxAge: 7 * 24 * 60 * 60 * 1000});
             req.body.id = decoded.id;
 
             // Call next() here to continue with the next middleware/controller

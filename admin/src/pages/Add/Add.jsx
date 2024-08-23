@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { assets } from "../../assets/assets"
 import "./Add.css"
 import axios from "axios"
@@ -12,11 +12,12 @@ const Add = ({ url }) => {
   const category = ["Salad", "Rolls", "Deserts", "Sandwich", "Cake", "Pure Veg", "Pasta", "Noodles"]
 
   const optionList = category.map((item, index) => {
-    return <option key={index} value={item}>{item}</option>
+    return <option key={index} value={item} required>{item}</option>
   })
 
   
   const [image, setImage] = useState(false)
+  const [add, setAdd] = useState(false)
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -25,11 +26,27 @@ const Add = ({ url }) => {
 
   })
   
+  
+  
   const onChangeHandler = (event) => {
     const name = event.target.name
     const value = event.target.value
     setData( data => ({ ...data, [name]: value }))
+    
+  
+
+    
   }
+  useEffect(() => {
+    
+    
+    if (data.name && data.description && data.price && data.category && image.name) {
+      setAdd(true)
+    } else {
+      setAdd(false)
+    }
+  }, [data, image])
+  
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -39,8 +56,18 @@ const Add = ({ url }) => {
     formData.append("price", Number(data.price))
     formData.append("category", data.category)
     formData.append("image", image)
+
+    
     const response = await axios.post(`${url}/api/food/add`, formData)
-    console.log(formData);
+    console.log(data);
+
+    const previous = () => {
+      setData(prev => ({ ...prev, category: prev[category]  }))
+      return data.category
+    }
+    
+    
+    
 
     if (response.data.success) {
       
@@ -48,9 +75,10 @@ const Add = ({ url }) => {
         name: "",
         description: "",
         price: "",
-        category: ""
+        category: previous()
       }) 
       setImage(false)
+      
       toast.success(response.data.message)
     }  
     else {
@@ -78,7 +106,7 @@ const Add = ({ url }) => {
         <div className="add-category-price">
           <div className="add-category flex-col">
             <p>Product category</p>
-            <select onChange={onChangeHandler} name="category" id="">
+            <select onChange={onChangeHandler} name="category" id="" required>
               {optionList}
             </select>
           </div>
@@ -88,7 +116,7 @@ const Add = ({ url }) => {
 
           </div>
         </div>
-        <button type="submit" className="add-btn">ADD</button>
+        {add ? <button type="submit" className="add-btn">ADD</button> : <button type="submit" className="add-btn disabled" disabled>ADD</button>}
       </form>
     </div>
   )
