@@ -32,7 +32,15 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions));
 app.use(express.static("./public"))
-app.options('*', cors(corsOptions)); // Enable pre-flight across-the-board
+
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', "https://food-delivery-app-swj3.vercel.app");
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(204); // No Content
+  });
+  
 
 
 // db connection
