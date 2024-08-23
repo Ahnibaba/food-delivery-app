@@ -29,6 +29,8 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions));
 
+app.options('*', cors(corsOptions)); // Enable pre-flight across-the-board
+
 
 // db connection
 connectDB()
