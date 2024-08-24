@@ -1,6 +1,8 @@
 import dotenv from "dotenv"
 dotenv.config()
 // import "dotenv/config"
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
@@ -11,13 +13,10 @@ import userRouter from "./routes/userRoute.js"
 import cartRouter from "./routes/cartRoute.js"
 import logoutRouter from "./routes/logoutRoute.js"
 import orderRouter from "./routes/orderRoute.js"
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 
 
-
-
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 
@@ -55,8 +54,7 @@ app.use("/api/user", logoutRouter)
 app.use("/api/cart", cartRouter)
 app.use("/api/order", orderRouter)
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 
 
 app.get("/", (req, res) => {  
@@ -69,8 +67,3 @@ app.listen(PORT, () => {
 
 
 
-//mongodb+srv://food-delivery:ani0520@cluster0.8phgzn3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-//app.use(cors({
-//     origin: "http://localhost:5173",
-//     credentials: true
-// }));
