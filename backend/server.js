@@ -29,11 +29,8 @@ const PORT = process.env.PORT || 4000
 // middleware
 app.use(express.json())
 app.use(cookieParser())
-//app.use(cors(corsOptions));
-app.use(cors({
-    origin: "https://food-delivery-app-swj3.vercel.app",
-    credentials: true
-}));
+app.use(cors(corsOptions));
+
 
 
 
@@ -67,3 +64,7 @@ app.listen(PORT, () => {
 
 
 //mongodb+srv://food-delivery:ani0520@cluster0.8phgzn3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+// app.use(cors({
+//     origin: "https://food-delivery-app-swj3.vercel.app",
+//     credentials: true
+// }));
