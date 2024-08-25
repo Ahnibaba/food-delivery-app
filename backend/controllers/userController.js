@@ -14,7 +14,7 @@ const loginUser = async (req, res) => {
        const user = await userModel.findOne({ email })
 
    if (!user) {
-       return res.status(400).json({ success: false, message: "User does not exist" })
+       return res.status(404).json({ success: false, message: "User does not exist" })
    }
 
    const comparePassword = await bcrypt.compare(password, user.password)

@@ -7,6 +7,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 
+
 const LoginPopup = () => {
 
     const { url, setToken, setShowLogin } = useContext(StoreContext)
@@ -45,9 +46,13 @@ const LoginPopup = () => {
         
            const response = await axios.post(newUrl, data, { withCredentials: true });
            console.log(response.data.accessToken);
+           console.log(response.data.success);
+           
 
         if (response.data.success) {
-           setToken(response.data.success)
+           setToken(response.data.accessToken)
+           
+           
            navigate("/")
            setShowLogin(false)
         }

@@ -11,9 +11,9 @@ const StoreContextProvider = (props) => {
 
 
    const [cartItems, setCartItems] = useState({});
-   //const url = "http://localhost:4000"
+   const url = "http://localhost:4000"
    //const url = "https://food-delivery-app-z2r9.vercel.app"
-   const url = "https://food-delivery-app-1-ywpm.onrender.com"
+   //const url = "https://food-delivery-app-1-ywpm.onrender.com"
    const [token, setToken] = useState(false)
    const [showLogin, setShowLogin] = useState(false)
    const [food_list, setFoodList] = useState([])
@@ -82,7 +82,7 @@ const StoreContextProvider = (props) => {
 
    const handleLogout = async () => {
       try {
-         const response = await axios.get(`${url}/api/user/logout`, { withCredentials: true })
+         const response = await axios.post(`${url}/api/user/logout`, {}, { withCredentials: true })
          console.log(response);
 
          setToken(false)

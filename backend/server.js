@@ -30,15 +30,10 @@ const PORT = process.env.PORT || 4000
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions));
-app.use(express.static("./public"))
 
-app.options('*', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', "https://food-delivery-app-swj3.vercel.app");
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.sendStatus(204); // No Content
-  });
+
+
+
   
 
 
@@ -48,7 +43,8 @@ connectDB()
 
 // api endpoints
 app.use("/api/food", foodRouter)
-app.use("/images", express.static("uploads"))
+app.use("/", express.static("public"))
+app.use("/images", express.static("./views/uploads"))
 app.use("/api/user", userRouter)
 app.use("/api/user", logoutRouter)
 app.use("/api/cart", cartRouter)
@@ -67,3 +63,8 @@ app.listen(PORT, () => {
 
 
 
+//mongodb+srv://food-delivery:ani0520@cluster0.8phgzn3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+//app.use(cors({
+//     origin: "http://localhost:5173",
+//     credentials: true
+// }));

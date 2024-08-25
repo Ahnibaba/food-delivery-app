@@ -7,6 +7,8 @@ const authMiddleware = async (req, res, next) => {
     
     
     const accessToken = req.cookies.accessToken
+    console.log("Am here and am trying to verify that the user is logged in");
+    
     console.log(accessToken);
     
 
@@ -64,8 +66,7 @@ const refresh = (req, res, next) => {
 
             res.cookie("accessToken", accessToken, { 
                 httpOnly: true,
-                secure: true,
-                sameSite: "None",
+                
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             req.body.id = decoded.id;

@@ -8,6 +8,7 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
 import PropTypes from "prop-types"
 import { StoreContext } from "../../context/StoreContext";
 
+
 const Navbar = () => {
 
   const [menu, setMenu] = useState("home");
@@ -44,6 +45,9 @@ const Navbar = () => {
     setClick(false)
     handleLogout()
   }
+
+  
+  
 
 
 
