@@ -25,29 +25,26 @@ const __dirname = dirname(__filename);
 
 
 // app config
-const app = express()
+const app = express();
 
-const PORT = process.env.PORT || 4000
-
-// middleware
-app.use(express.json())
+// Apply CORS middleware before any other middleware
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
 app.use(
     session({
-      secret: process.env.JWT,
-      saveUninitialized: true,
-      cookie: {
-        maxAge: 3 * 60 * 1000,
-        sameSite: 'None', // Important for cross-origin requests
-        secure: true, // Ensures cookies are only sent over HTTPS
-      },
-      resave: false,
+        secret: process.env.JWT,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 3 * 60 * 1000,
+            sameSite: 'None',
+            secure: true,
+        },
+        resave: false,
     })
-  );
-  
-app.use(cookieParser())
-app.use(cors(corsOptions));
+);
 
-
+// Your routes and other middleware go here
 
 
   
