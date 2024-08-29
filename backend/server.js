@@ -37,12 +37,13 @@ app.use(
       saveUninitialized: true,
       cookie: {
         maxAge: 3 * 60 * 1000,
+        sameSite: 'None', // Important for cross-origin requests
+        secure: true, // Ensures cookies are only sent over HTTPS
       },
       resave: false,
     })
   );
   
-app.use(cookieParser());
 app.use(cookieParser())
 app.use(cors(corsOptions));
 
