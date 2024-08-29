@@ -25,30 +25,34 @@ const loginUser = async (req, res) => {
    const accessToken = jwt.sign(
        { id: user._id },
        process.env.ACCESS_TOKEN_SECRET,
-       { expiresIn: "7d" }
+       { expiresIn: "1m" }
    )
    console.log("This is my accesstoken ----- " + accessToken);
    
    const refreshToken = jwt.sign(
        { id: user._id },
        process.env.REFRESH_TOKEN_SECRET,
-       { expiresIn: "30d" }
+       { expiresIn: "2m" }
    )
-   res.cookie("accessToken", accessToken, { 
-       httpOnly: true,
-       secure: true,
-       sameSite: "None",
-       maxAge: 7 * 24 * 60 * 60 * 1000
-   })
   
-   res.cookie("refreshToken", refreshToken, {
-       httpOnly: true,
-       secure: true,
-       sameSite: "None",
-       maxAge: 30 * 24 * 60 * 60 * 1000
-   })
 
-   res.status(200).json({ success: true, accessToken, refreshToken, message: "Logged in successfully" })
+   let sess
+   sess = req.session
+   sess.accessToken = accessToken
+   sess.refreshToken = refreshToken
+
+
+  
+   
+   
+
+
+
+
+
+
+
+   res.status(200).json({ success: true, message: "Logged in successfully" })
 
    } catch (error) {
        console.log(error);

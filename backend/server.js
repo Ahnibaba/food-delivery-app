@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import session from "express-session"
 import { connectDB } from "./config/db.js"
 import corsOptions from "./config/corsOptions.js"
 import foodRouter from "./routes/foodRoute.js"
@@ -13,6 +14,8 @@ import userRouter from "./routes/userRoute.js"
 import cartRouter from "./routes/cartRoute.js"
 import logoutRouter from "./routes/logoutRoute.js"
 import orderRouter from "./routes/orderRoute.js"
+
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +31,18 @@ const PORT = process.env.PORT || 4000
 
 // middleware
 app.use(express.json())
+app.use(
+    session({
+      secret: process.env.JWT,
+      saveUninitialized: true,
+      cookie: {
+        maxAge: 3 * 60 * 1000,
+      },
+      resave: false,
+    })
+  );
+  
+app.use(cookieParser());
 app.use(cookieParser())
 app.use(cors(corsOptions));
 
@@ -43,8 +58,8 @@ connectDB()
 
 // api endpoints
 app.use("/api/food", foodRouter)
+app.use("/images", express.static("uploads"))
 app.use("/", express.static("public"))
-app.use("/images", express.static("./views/uploads"))
 app.use("/api/user", userRouter)
 app.use("/api/user", logoutRouter)
 app.use("/api/cart", cartRouter)
