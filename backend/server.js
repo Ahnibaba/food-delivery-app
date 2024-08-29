@@ -21,7 +21,7 @@ import orderRouter from "./routes/orderRoute.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
+const PORT = process.env.PORT || 4000
 
 
 // app config
@@ -45,6 +45,8 @@ app.use(
 );
 
 // Your routes and other middleware go here
+
+
 
 
   
