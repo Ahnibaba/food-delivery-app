@@ -31,6 +31,19 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+    session({
+        secret: process.env.JWT,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 2 * 60 * 1000,
+            secure: true,
+            sameSite: "None"
+            
+        },
+        resave: false,
+    })
+);
 
 // Your routes and other middleware go here
 

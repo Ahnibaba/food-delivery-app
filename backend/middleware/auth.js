@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const authMiddleware = async (req, res, next) => {
     
     
-    const accessToken = req.cookies.accessToken
+    const accessToken = req.session.accessToken
     console.log("Am here and am trying to verify that the user is logged in");
     
     console.log(accessToken);
@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
     if (!accessToken) {
         console.log("No access-token");
         return refresh(req, res, next);  // Pass next() to refresh so it can call it if needed
-        return res.status(401).json({ success: false, message: "Unauthorized Login again" });
+        //return res.status(401).json({ success: false, message: "Unauthorized Login again" });
     }
 
  
@@ -26,9 +26,10 @@ const authMiddleware = async (req, res, next) => {
             accessToken,
             process.env.ACCESS_TOKEN_SECRET,
             (err, decoded) => {
-                if (err) {
+                if (err instanceof jwt.TokenExpiredError) {
+                    return refresh(req, res, next)
                     console.log("Token verification failed:", err);
-                    return res.status(403).json({ message: "Forbidden" });
+                    //return res.status(403).json({ message: "Forbidden" });
                 }
                 req.body.userId = decoded.id;
                 next();
@@ -42,7 +43,7 @@ const authMiddleware = async (req, res, next) => {
 
 
 const refresh = (req, res, next) => {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.session.refreshToken;
     console.log(`This is refreshToken -------- ${refreshToken}`);
     
 
@@ -66,9 +67,8 @@ const refresh = (req, res, next) => {
 
             res.cookie("accessToken", accessToken, { 
                 httpOnly: true,
-                sameSite: "None",
-                secure: true,
-                maxAge: 1 * 24 * 60 * 60 * 1000
+               
+                maxAge: 1 * 60 * 1000
             })
             req.body.userId = decoded.id;
 
