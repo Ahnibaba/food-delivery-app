@@ -36,15 +36,15 @@ const loginUser = async (req, res) => {
         )
         res.cookies("accessToken", accessToken, {
             httpOnly: true,
-            samseSite: true,
+            samseSite: "None",
             secure: true,
             maxAge: 1 * 24 * 60 * 60 * 1000
         })
         res.cookies("refreshToken", refreshToken, {
             httpOnly: true,
-            samseSite: true,
+            samseSite: "None",
             secure: true,
-            maxAge: 1 * 24 * 60 * 60 * 1000
+            maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
 

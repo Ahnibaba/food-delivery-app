@@ -66,7 +66,8 @@ const refresh = (req, res, next) => {
 
             res.cookie("accessToken", accessToken, { 
                 httpOnly: true,
-               
+                sameSite: "None",
+                secure: true,
                 maxAge: 1 * 24 * 60 * 60 * 1000
             })
             req.body.userId = decoded.id;
