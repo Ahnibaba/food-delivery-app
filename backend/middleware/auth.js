@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
     if (!accessToken) {
         console.log("No access-token");
         return refresh(req, res, next);  // Pass next() to refresh so it can call it if needed
-        //return res.status(401).json({ success: false, message: "Unauthorized Login again" });
+        return res.status(401).json({ success: false, message: "Unauthorized Login again" });
     }
 
  
@@ -28,8 +28,6 @@ const authMiddleware = async (req, res, next) => {
             (err, decoded) => {
                 if (err instanceof jwt.TokenExpiredError) {
                     return refresh(req, res, next)
-                    console.log("Token verification failed:", err);
-                    //return res.status(403).json({ message: "Forbidden" });
                 }
                 req.body.userId = decoded.id;
                 next();
@@ -64,12 +62,6 @@ const refresh = (req, res, next) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: "1m" }
             );
-
-            res.cookie("accessToken", accessToken, { 
-                httpOnly: true,
-               
-                maxAge: 1 * 60 * 1000
-            })
             req.body.userId = decoded.id;
 
             // Call next() here to continue with the next middleware/controller
