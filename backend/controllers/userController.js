@@ -6,60 +6,56 @@ import validator from "validator"
 
 // login user
 const loginUser = async (req, res) => {
-   console.log("am here");
-   
-   const { email, password } = req.body
+    console.log("am here");
 
-   try {
-       const user = await userModel.findOne({ email })
+    const { email, password } = req.body
 
-   if (!user) {
-       return res.status(404).json({ success: false, message: "User does not exist" })
-   }
+    try {
+        const user = await userModel.findOne({ email })
 
-   const comparePassword = await bcrypt.compare(password, user.password)
-   if (!comparePassword) {
-       return res.status(401).json({ success: false, message: "Enter a valid password" })
-   }
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User does not exist" })
+        }
 
-   const accessToken = jwt.sign(
-       { id: user._id },
-       process.env.ACCESS_TOKEN_SECRET,
-       { expiresIn: "1d" }
-   )
-   console.log("This is my accesstoken ----- " + accessToken);
-   
-   const refreshToken = jwt.sign(
-       { id: user._id },
-       process.env.REFRESH_TOKEN_SECRET,
-       { expiresIn: "7d" }
-   )
-  
+        const comparePassword = await bcrypt.compare(password, user.password)
+        if (!comparePassword) {
+            return res.status(401).json({ success: false, message: "Enter a valid password" })
+        }
 
-   let sess
-   sess = req.session
-   sess.accessToken = accessToken
-   sess.refreshToken = refreshToken
+        const accessToken = jwt.sign(
+            { id: user._id },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "1d" }
+        )
+        console.log("This is my accesstoken ----- " + accessToken);
 
-
-  
-   
-   
-
-
-
+        const refreshToken = jwt.sign(
+            { id: user._id },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: "7d" }
+        )
+        res.cookies("accessToken", accessToken, {
+            httpOnly: true,
+            samseSite: true,
+            secure: true,
+            maxAge: 1 * 24 * 60 * 60 * 1000
+        })
+        res.cookies("refreshToken", refreshToken, {
+            httpOnly: true,
+            samseSite: true,
+            secure: true,
+            maxAge: 1 * 24 * 60 * 60 * 1000
+        })
 
 
+        res.status(200).json({ success: true, message: "Logged in successfully" })
 
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ success: false, message: "Login failed" })
 
-   res.status(200).json({ success: true, message: "Logged in successfully" })
+    }
 
-   } catch (error) {
-       console.log(error);
-       res.status(400).json({ success: false, message: "Login failed" })
-       
-   }
-   
 
 
 
@@ -68,42 +64,42 @@ const loginUser = async (req, res) => {
 
 // register user
 const registerUser = async (req, res) => {
-   const { name, password, email } = req.body
+    const { name, password, email } = req.body
 
-   try {
-    //checking if user already exist
-      const exists = await userModel.findOne({ email })
-      if (exists) {
-         return res.status(409).json({ success: false, message: "User already exist" })
-      }
+    try {
+        //checking if user already exist
+        const exists = await userModel.findOne({ email })
+        if (exists) {
+            return res.status(409).json({ success: false, message: "User already exist" })
+        }
 
-      // validating email format and a strong password
-      if(!validator.isEmail(email)) {
-         return res.status(400).json({ success: false, message: "Please enter a valid email" })
-      }
-      if (password.length < 8) {
-         return res.status(400).json({ success: false, message: "Please enter a strong password" })
-      }
+        // validating email format and a strong password
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ success: false, message: "Please enter a valid email" })
+        }
+        if (password.length < 8) {
+            return res.status(400).json({ success: false, message: "Please enter a strong password" })
+        }
 
-      // hashing user password
-      const salt = await bcrypt.genSalt(10, password)
-      const hashedPassword = await bcrypt.hash(password, salt)
+        // hashing user password
+        const salt = await bcrypt.genSalt(10, password)
+        const hashedPassword = await bcrypt.hash(password, salt)
 
-      const newUser = new userModel({ 
-        name: name,
-        email: email,
-        password: hashedPassword
-       })
+        const newUser = new userModel({
+            name: name,
+            email: email,
+            password: hashedPassword
+        })
 
-       const user = await newUser.save()
+        const user = await newUser.save()
 
-       res.status(200).json({ success: true, message: "User Successfully Created" })
+        res.status(200).json({ success: true, message: "User Successfully Created" })
 
-   } catch (error) {
-      console.log(error);
-      res.status(400).json({ success: false, message: error })
-      
-   }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ success: false, message: error })
+
+    }
 }
 
 

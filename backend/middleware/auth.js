@@ -2,12 +2,11 @@ import dotenv from "dotenv"
 dotenv.config()
 
 import jwt from "jsonwebtoken";
-//const { verify, TokenExpiredError } = jwt
 
 const authMiddleware = async (req, res, next) => {
     
     
-    const accessToken = req.session.accessToken
+    const accessToken = req.cookies.accessToken
     console.log("Am here and am trying to verify that the user is logged in");
     
     console.log(accessToken);
@@ -27,10 +26,9 @@ const authMiddleware = async (req, res, next) => {
             accessToken,
             process.env.ACCESS_TOKEN_SECRET,
             (err, decoded) => {
-                if (err instanceof jwt.TokenExpiredError ) {
-                    return refresh(req, res, next);  // Pass next() to refresh so it can call it if needed
-                    // console.log("Token verification failed:", err);
-                    // return res.status(403).json({ message: "Forbidden" });
+                if (err) {
+                    console.log("Token verification failed:", err);
+                    return res.status(403).json({ message: "Forbidden" });
                 }
                 req.body.userId = decoded.id;
                 next();
@@ -44,7 +42,7 @@ const authMiddleware = async (req, res, next) => {
 
 
 const refresh = (req, res, next) => {
-    const refreshToken = req.session.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     console.log(`This is refreshToken -------- ${refreshToken}`);
     
 
@@ -66,6 +64,11 @@ const refresh = (req, res, next) => {
                 { expiresIn: "1m" }
             );
 
+            res.cookie("accessToken", accessToken, { 
+                httpOnly: true,
+               
+                maxAge: 1 * 24 * 60 * 60 * 1000
+            })
             req.body.userId = decoded.id;
 
             // Call next() here to continue with the next middleware/controller
