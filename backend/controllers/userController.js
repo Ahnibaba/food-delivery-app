@@ -25,14 +25,14 @@ const loginUser = async (req, res) => {
    const accessToken = jwt.sign(
        { id: user._id },
        process.env.ACCESS_TOKEN_SECRET,
-       { expiresIn: "1m" }
+       { expiresIn: "1d" }
    )
    console.log("This is my accesstoken ----- " + accessToken);
    
    const refreshToken = jwt.sign(
        { id: user._id },
        process.env.REFRESH_TOKEN_SECRET,
-       { expiresIn: "2m" }
+       { expiresIn: "7d" }
    )
   
 
