@@ -24,6 +24,9 @@ const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 4000
 
+// db connection
+connectDB()
+
 
 // app config
 const app = express();
@@ -38,6 +41,9 @@ if (!mongoUrl) {
   throw new Error('MongoDB connection URL is missing.');
 }
 
+
+
+
 app.use(
     session({
         store: MongoStore.create({
@@ -49,6 +55,8 @@ app.use(
         saveUninitialized: false,
         cookie: {
             maxAge: 2 * 60 * 1000,
+            sameSite: "none",
+            secure: true
             
         },
     })
@@ -71,8 +79,7 @@ app.use((req, res, next) => {
   
 
 
-// db connection
-connectDB()
+
 
 
 // api endpoints

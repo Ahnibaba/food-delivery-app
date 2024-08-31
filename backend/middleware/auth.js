@@ -4,6 +4,8 @@ dotenv.config()
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
+    console.log('Access Token:', req.session.accessToken);
+    console.log('Refresh Token:', req.session.refreshToken);
     
     
     const accessToken = req.session.accessToken

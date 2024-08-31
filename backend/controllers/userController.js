@@ -36,10 +36,10 @@ const loginUser = async (req, res) => {
    )
   
 
-   let sess
-   sess = req.session
-   sess.accessToken = accessToken
-   sess.refreshToken = refreshToken
+  
+
+   req.session.accessToken = accessToken
+   req.session.refreshToken = refreshToken
 
 
   
