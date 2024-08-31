@@ -7,6 +7,7 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import session from "express-session"
+import MongoStore from 'connect-mongo';
 import { connectDB } from "./config/db.js"
 import corsOptions from "./config/corsOptions.js"
 import foodRouter from "./routes/foodRoute.js"
@@ -31,17 +32,26 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+const mongoUrl = process.env.DATABASE_URL;
+
+if (!mongoUrl) {
+  throw new Error('MongoDB connection URL is missing.');
+}
+
 app.use(
     session({
-        secret: process.env.JWT,
-        saveUninitialized: true,
+        store: MongoStore.create({
+            mongoUrl: mongoUrl,
+            collectionName: 'sessions', // Optional, can be customized
+        }),
+        secret: process.env.JWT, // Use a strong secret key
+        resave: false,
+        saveUninitialized: false,
         cookie: {
             maxAge: 2 * 60 * 1000,
+            sameSite: 'none',
             secure: true,
-            sameSite: "None"
-            
         },
-        resave: false,
     })
 );
 

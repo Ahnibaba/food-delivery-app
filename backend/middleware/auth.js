@@ -46,7 +46,7 @@ const refresh = (req, res, next) => {
     
 
     if (!refreshToken) {
-        return res.status(401).json({ success: false, message: "fire" });
+        return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
     jwt.verify(
