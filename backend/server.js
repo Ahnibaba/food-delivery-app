@@ -55,6 +55,9 @@ app.use(
 );
 app.use((req, res, next) => {
   console.log('Session data:', req.session);
+  console.log(req.session.accessToken);
+  console.log(req.session.refreshToken);
+  
   next();
 });
 
