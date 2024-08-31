@@ -35,39 +35,39 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-const mongoUrl = process.env.DATABASE_URL;
+// const mongoUrl = process.env.DATABASE_URL;
 
-if (!mongoUrl) {
-  throw new Error('MongoDB connection URL is missing.');
-}
-
-
+// if (!mongoUrl) {
+//   throw new Error('MongoDB connection URL is missing.');
+// }
 
 
-app.use(
-    session({
-        store: MongoStore.create({
-            mongoUrl: mongoUrl,
-            collectionName: 'sessions', // Optional, can be customized
-        }),
-        secret: process.env.JWT, // Use a strong secret key
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            maxAge: 2 * 60 * 1000,
-            sameSite: "none",
-            secure: true
+
+
+// app.use(
+//     session({
+//         store: MongoStore.create({
+//             mongoUrl: mongoUrl,
+//             collectionName: 'sessions', // Optional, can be customized
+//         }),
+//         secret: process.env.JWT, // Use a strong secret key
+//         resave: false,
+//         saveUninitialized: false,
+//         cookie: {
+//             maxAge: 2 * 60 * 1000,
+//             sameSite: "none",
+//             secure: true
             
-        },
-    })
-);
-app.use((req, res, next) => {
-  console.log('Session data:', req.session);
-  console.log(req.session.accessToken);
-  console.log(req.session.refreshToken);
+//         },
+//     })
+// );
+// app.use((req, res, next) => {
+//   console.log('Session data:', req.session);
+//   console.log(req.session.accessToken);
+//   console.log(req.session.refreshToken);
   
-  next();
-});
+//   next();
+// });
 
 
 

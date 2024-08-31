@@ -35,11 +35,23 @@ const loginUser = async (req, res) => {
        { expiresIn: "2m" }
    )
   
+   res.cookie('accessToken', accessToken, {
+    maxAge: 1 * 60 * 1000 , // cookie will expire in 15 minutes
+    httpOnly: true, // cookie is only accessible by the web server
+    secure: true, // cookie will be sent only over HTTPS
+    sameSite: "none"
+});
+   res.cookie('refreshToken', refreshToken, {
+    maxAge: 2 * 60 * 1000, // cookie will expire in 15 minutes
+    httpOnly: true, // cookie is only accessible by the web server
+    secure: true, // cookie will be sent only over HTTPS
+    sameSite: "none"
+});
 
   
 
-   req.session.accessToken = accessToken
-   req.session.refreshToken = refreshToken
+//    req.session.accessToken = accessToken
+//    req.session.refreshToken = refreshToken
 
 
   

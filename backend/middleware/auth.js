@@ -4,11 +4,12 @@ dotenv.config()
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
-    console.log('AccessToken:', req.session.accessToken);
-    console.log('RefreshToken:', req.session.refreshToken);
+    //console.log('AccessToken:', req.session.accessToken);
+  //  console.log('RefreshToken:', req.session.refreshToken);
     
     
-    const accessToken = req.session.accessToken
+    //const accessToken = req.session.accessToken
+    const accessToken = req.cookies.accessToken
     console.log("Am here and am trying to verify that the user is logged in");
     
     console.log(accessToken);
@@ -43,7 +44,8 @@ const authMiddleware = async (req, res, next) => {
 
 
 const refresh = (req, res, next) => {
-    const refreshToken = req.session.refreshToken;
+    //const refreshToken = req.session.refreshToken;
+    const refreshToken = req.cookies.refreshToken
     console.log(`This is refreshToken -------- ${refreshToken}`);
     
 
@@ -64,6 +66,12 @@ const refresh = (req, res, next) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: "1m" }
             );
+            res.cookie('accessToken', accessToken, {
+                maxAge: 1 * 60 * 1000 , // cookie will expire in 15 minutes
+                httpOnly: true, // cookie is only accessible by the web server
+                secure: true, // cookie will be sent only over HTTPS
+                sameSite: "none"
+            });
             req.body.userId = decoded.id;
 
             // Call next() here to continue with the next middleware/controller
